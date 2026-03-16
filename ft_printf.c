@@ -88,10 +88,27 @@ int	ft_printf(const char *input, ...)
 // int main()
 // {
 // 	char str[] = "aa";
-// 	printf("my return: %d\n",ft_printf
-//("|%.1s %.2s %.3s %.4s|\n", " - ", "", "4", (char*)NULL));
-// 	printf("ori return: %d\n", printf
-//("|%.1s %.2s %.3s %.4s|\n", " - ", "", "4", (char*)NULL));
+// 	printf("my return: %d\n", ft_printf(" % 4d ", -20));
+// 	printf("ori return: %d\n", printf(" % 4d ", -20));
+
+// 	printf("my return: %d\n", ft_printf(" %+4d ", -20));
+// 	printf("ori return: %d\n", printf(" %+4d ", -20));
+
+// 	printf("my return: %d\n", ft_printf(" %.2d ", -2));
+// 	printf("ori return: %d\n", printf(" %.2d ", -2));
+
+// 	printf("my return: %d\n", ft_printf(" %.3d ", -11));
+// 	printf("ori return: %d\n", printf(" %.3d ", -11));
+
+// 	printf("my return: %d\n", ft_printf(" %.1x ", 0));
+// 	printf("ori return: %d\n", printf(" %.1x ", 0));
 // 	(void)str;
 // 	return 0;
 // }
+
+	// printf("my return: %d\n",ft_printf(" %+4d ", -20));
+	// printf("ori return: %d\n", printf(" %+4d ", -20));
+
+	
+	// printf("my return: %d\n",ft_printf(" % 4d ", -20));
+	// printf("ori return: %d\n", printf(" % 4d ", -20));

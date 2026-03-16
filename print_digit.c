@@ -47,54 +47,62 @@ char	*ft_itoa_printf(unsigned int n, int *out_nbr_len)
 	return (str);
 }
 
-static int	resolve_digit_sign(t_format *f, int *is_negative, int *len)
+static char	resolve_digit_sign(t_format *f, int is_negative)
 {
-	int	count;
-
-	count = 0;
-	if (f->zero || *is_negative || f->plus)
-	{
-		if (f->plus && *is_negative == 0)
-		{
-			count += write(1, "+", 1);
-			(*len)++;
-		}
-		if (*is_negative)
-		{
-			count += write(1, "-", 1);
-			(*len)++;
-		}
-	}
-	return (count);
+	if (is_negative)
+		return ('-');
+	if (f->plus)
+		return ('+');
+	if (f->space)
+		return (' ');
+	return ('\0');
 }
 
 // Enough for -2147483648\0
 int	print_digit(t_format *f, int arg)
 {
 	char	*result;
+	char	sign;
 	int		count;
 	int		len;
 	int		is_negative;
+	int		precision_zeros;
+	int		total_len;
+	long	nbr;
 
 	count = 0;
 	is_negative = 0;
-	if (arg < 0)
+	precision_zeros = 0;
+	nbr = (long)arg;
+	if (nbr < 0)
 	{
 		is_negative = 1;
-		arg = -arg;
-		arg = (unsigned int)arg;
+		nbr = -nbr;
 	}
-	result = ft_itoa_printf(arg, &len);
-	count += resolve_digit_sign(f, &is_negative, &len);
-	if (is_negative && f->dot)
-		len--;
-	if (f->default_ && f->field_witdh)
-		count += apply_format(f, len);
-	if (!is_negative && f->space && !f->field_witdh)
-		count += write(1, " ", 1);
+	result = ft_itoa_printf((unsigned int)nbr, &len);
+	sign = resolve_digit_sign(f, is_negative);
+	if (f->dot && f->field_witdh > len)
+		precision_zeros = f->field_witdh - len;
+	total_len = len;
+	total_len += precision_zeros;
+	if (sign)
+		total_len++;
+	if (!f->dot && !f->minus && f->default_ && f->field_witdh)
+	{
+		if (f->zero && !f->dot && sign)
+		{
+			count += write(1, &sign, 1);
+			sign = '\0';
+		}
+		count += apply_format(f, total_len);
+	}
+	if (sign)
+		count += write(1, &sign, 1);
+	while (precision_zeros-- > 0)
+		count += write(1, "0", 1);
 	count += write(1, result, ft_strlen(result));
-	if (f->minus && f->field_witdh)
-		count += apply_format(f, len);
+	if (!f->dot && f->minus && f->field_witdh)
+		count += apply_format(f, total_len);
 	return (free(result), count);
 }
 
