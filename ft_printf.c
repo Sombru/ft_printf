@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pasha <pasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 14:52:18 by sombru            #+#    #+#             */
-/*   Updated: 2025/06/21 15:17:16 by sombru           ###   ########.fr       */
+/*   Updated: 2026/03/21 17:51:53 by pasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,7 @@ int	ft_printf(const char *input, ...)
 // 	(void)str;
 // 	return 0;
 // }
-
 	// printf("my return: %d\n",ft_printf(" %+4d ", -20));
 	// printf("ori return: %d\n", printf(" %+4d ", -20));
-
-	
 	// printf("my return: %d\n",ft_printf(" % 4d ", -20));
 	// printf("ori return: %d\n", printf(" % 4d ", -20));

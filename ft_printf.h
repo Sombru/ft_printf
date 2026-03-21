@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pasha <pasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 15:08:05 by sombru            #+#    #+#             */
-/*   Updated: 2025/06/21 15:15:16 by sombru           ###   ########.fr       */
+/*   Updated: 2026/03/21 17:51:24 by pasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ typedef struct s_format
 	int		precision;
 	char	specifier;
 }	t_format;
+
+typedef struct s_digit
+{
+	char	sign;
+	int		len;
+	int		is_negative;
+	int		precision_zeros;
+	long	nbr;
+}	t_digit;
 
 int		convert(t_format *f, va_list arg);
 int		expand(const char *input, va_list arg);
