@@ -27,25 +27,22 @@ int	print_string(t_format *f, const char *arg)
 {
 	int			count;
 	int			len;
+	int			out_len;
 	const char	*str;
 
 	str = get_string(arg);
 	count = 0;
+	if (!arg && f->dot)
+		str = "";
 	len = ft_strlen(str);
-	if (f->default_ && f->field_witdh && !f->dot)
-		count += apply_format(f, len);
-	if (f->dot)
-	{
-		if (!arg)
-			return (0);
-		if (len < f->field_witdh)
-			count += write(1, str, len);
-		else
-			count += write(1, str, f->field_witdh);
-	}
-	else if (str)
-		count += write(1, str, ft_strlen(str));
-	if (f->minus && f->field_witdh && !f->dot)
-		count += apply_format(f, len);
+	out_len = len;
+	if (f->dot && f->precision < out_len)
+		out_len = f->precision;
+	if (!f->minus && f->field_witdh)
+		count += apply_format(f, out_len);
+	if (out_len > 0)
+		count += write(1, str, out_len);
+	if (f->minus && f->field_witdh)
+		count += apply_format(f, out_len);
 	return (count);
 }

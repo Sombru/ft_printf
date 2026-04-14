@@ -14,18 +14,19 @@
 
 int	apply_format(t_format *f, int len_of_arg)
 {
-	int	count;
+	int		count;
+	char	pad;
 
 	count = 0;
-	if (!f->zero && !f->space && f->default_ && f->minus)
+	pad = ' ';
+	if (f->field_witdh <= len_of_arg)
 		return (0);
+	if (f->zero && !f->dot && !f->minus)
+		pad = '0';
 	f->field_witdh -= len_of_arg;
 	while (f->field_witdh > 0)
 	{
-		if (f->zero || f->dot)
-			count += (write(1, "0", 1));
-		else
-			count += (write(1, " ", 1));
+		count += (write(1, &pad, 1));
 		f->field_witdh--;
 	}
 	return (count);

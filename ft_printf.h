@@ -43,6 +43,15 @@ typedef struct s_digit
 	long	nbr;
 }	t_digit;
 
+typedef struct s_hex_data
+{
+	int	len;
+	int	prefix_len;
+	int	prefix_printed;
+	int	precision_zeros;
+	int	total_len;
+}	t_hex_data;
+
 int		convert(t_format *f, va_list arg);
 int		expand(const char *input, va_list arg);
 void	parse_flags(char *format_string, t_format *f);

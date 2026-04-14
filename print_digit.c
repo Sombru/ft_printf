@@ -64,11 +64,8 @@ static int	print_digit_formatted(t_format *f, char *result, t_digit *d)
 	int	total_len;
 
 	count = 0;
-	total_len = d->len;
-	total_len += d->precision_zeros;
-	if (d->sign)
-		total_len++;
-	if (!f->dot && !f->minus && f->default_ && f->field_witdh)
+	total_len = d->len + d->precision_zeros + (d->sign != '\0');
+	if (!f->minus && f->field_witdh)
 	{
 		if (f->zero && !f->dot && d->sign)
 		{
@@ -81,8 +78,8 @@ static int	print_digit_formatted(t_format *f, char *result, t_digit *d)
 		count += write(1, &d->sign, 1);
 	while (d->precision_zeros-- > 0)
 		count += write(1, "0", 1);
-	count += write(1, result, ft_strlen(result));
-	if (!f->dot && f->minus && f->field_witdh)
+	count += write(1, result, d->len);
+	if (f->minus && f->field_witdh)
 		count += apply_format(f, total_len);
 	return (count);
 }
@@ -103,14 +100,11 @@ int	print_digit(t_format *f, int arg)
 	}
 	result = ft_itoa_printf((unsigned int)d.nbr, &d.len);
 	d.sign = resolve_digit_sign(f, d.is_negative);
-	if (f->dot && f->field_witdh > d.len)
-		d.precision_zeros = f->field_witdh - d.len;
+	if (f->dot && f->precision == 0 && d.nbr == 0)
+		d.len = 0;
+	if (f->dot && f->precision > d.len)
+		d.precision_zeros = f->precision - d.len;
 	d.len = print_digit_formatted(f, result, &d);
 	free(result);
 	return (d.len);
 }
-
-// int main()
-// {
-// 	print_digit(NULL, 45);
-// }

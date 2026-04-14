@@ -18,6 +18,8 @@ inline static void	resolve_invalid_flags(t_format *f)
 {
 	if (f->zero && f->minus)
 		f->zero = 0;
+	if (f->dot && f->zero)
+		f->zero = 0;
 	if (f->minus && f->default_)
 		f->default_ = 0;
 	if (f->plus && f->space)
@@ -45,7 +47,7 @@ int	expand(const char *input, va_list arg)
 	if (*input == '%')
 		return (write(1, "%", 1));
 	format_string = get_format_string(input);
-	f.default_ = 1;
+	f.default_ = 0;
 	f.dot = 0;
 	f.field_witdh = 0;
 	f.hash = 0;
@@ -85,27 +87,120 @@ int	ft_printf(const char *input, ...)
 	return (count);
 }
 
-// int main()
+// typedef struct s_int_case
 // {
-// 	char str[] = "aa";
-// 	printf("my return: %d\n", ft_printf(" % 4d ", -20));
-// 	printf("ori return: %d\n", printf(" % 4d ", -20));
+// 	const char	*name;
+// 	const char	*format;
+// 	int			value;
+// }	t_int_case;
 
-// 	printf("my return: %d\n", ft_printf(" %+4d ", -20));
-// 	printf("ori return: %d\n", printf(" %+4d ", -20));
+// typedef struct s_uint_case
+// {
+// 	const char	*name;
+// 	const char	*format;
+// 	unsigned int	value;
+// }	t_uint_case;
 
-// 	printf("my return: %d\n", ft_printf(" %.2d ", -2));
-// 	printf("ori return: %d\n", printf(" %.2d ", -2));
+// typedef struct s_str_case
+// {
+// 	const char	*name;
+// 	const char	*format;
+// 	const char	*value;
+// }	t_str_case;
 
-// 	printf("my return: %d\n", ft_printf(" %.3d ", -11));
-// 	printf("ori return: %d\n", printf(" %.3d ", -11));
+// static void	run_int_cases(const t_int_case *cases, size_t count)
+// {
+// 	size_t	i;
+// 	int		my_ret;
+// 	int		or_ret;
 
-// 	printf("my return: %d\n", ft_printf(" %.1x ", 0));
-// 	printf("ori return: %d\n", printf(" %.1x ", 0));
-// 	(void)str;
-// 	return 0;
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		printf("[int] %s | format: \"%s\" | value: %d\n", cases[i].name,
+// 			cases[i].format, cases[i].value);
+// 		fflush(stdout);
+// 		my_ret = ft_printf("my: ");
+// 		my_ret += ft_printf(cases[i].format, cases[i].value);
+// 		my_ret += ft_printf("\n");
+// 		or_ret = printf("or: ");
+// 		or_ret += printf(cases[i].format, cases[i].value);
+// 		or_ret += printf("\n");
+// 		printf("ret -> my: %d | or: %d\n\n", my_ret, or_ret);
+// 		i++;
+// 	}
 // }
-	// printf("my return: %d\n",ft_printf(" %+4d ", -20));
-	// printf("ori return: %d\n", printf(" %+4d ", -20));
-	// printf("my return: %d\n",ft_printf(" % 4d ", -20));
-	// printf("ori return: %d\n", printf(" % 4d ", -20));
+
+// static void	run_uint_cases(const t_uint_case *cases, size_t count)
+// {
+// 	size_t	i;
+// 	int		my_ret;
+// 	int		or_ret;
+
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		printf("[unsigned] %s | format: \"%s\" | value: %u\n", cases[i].name,
+// 			cases[i].format, cases[i].value);
+// 		fflush(stdout);
+// 		my_ret = ft_printf("my: ");
+// 		my_ret += ft_printf(cases[i].format, cases[i].value);
+// 		my_ret += ft_printf("\n");
+// 		or_ret = printf("or: ");
+// 		or_ret += printf(cases[i].format, cases[i].value);
+// 		or_ret += printf("\n");
+// 		printf("ret -> my: %d | or: %d\n\n", my_ret, or_ret);
+// 		i++;
+// 	}
+// }
+
+// static void	run_str_cases(const t_str_case *cases, size_t count)
+// {
+// 	size_t	i;
+// 	int		my_ret;
+// 	int		or_ret;
+
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		printf("[string] %s | format: \"%s\"\n", cases[i].name,
+// 			cases[i].format);
+// 		fflush(stdout);
+// 		my_ret = ft_printf("my: ");
+// 		my_ret += ft_printf(cases[i].format, cases[i].value);
+// 		my_ret += ft_printf("\n");
+// 		or_ret = printf("or: ");
+// 		or_ret += printf(cases[i].format, cases[i].value);
+// 		or_ret += printf("\n");
+// 		printf("ret -> my: %d | or: %d\n\n", my_ret, or_ret);
+// 		i++;
+// 	}
+// }
+
+// int	main(void)
+// {
+// 	const t_int_case	int_cases[] = {
+// 		{"space flag", " % 4d ", -20},
+// 		{"plus flag", " %+4d ", -20},
+// 		{"precision 2", " %.2d ", -2},
+// 		{"precision 3", " %.3d ", -11},
+// 		{"precision zero, zero value", " %.0d ", 0},
+// 		{"width + precision", " %8.3d ", 42}
+// 	};
+// 	const t_uint_case	uint_cases[] = {
+// 		{"hex precision 1", " %.1x ", 0},
+// 		{"hex precision zero", " %.0x ", 0},
+// 		{"hex width + precision", " %8.5x ", 42},
+// 		{"unsigned precision", " %.4u ", 12}
+// 	};
+// 	const t_str_case	str_cases[] = {
+// 		{"string precision", " %.3s ", "hello"},
+// 		{"string width + precision", " %8.3s ", "hello"},
+// 		{"null string precision", " %.3s ", NULL}
+// 	};
+
+// 	run_int_cases(int_cases, sizeof(int_cases) / sizeof(int_cases[0]));
+// 	run_uint_cases(uint_cases, sizeof(uint_cases) / sizeof(uint_cases[0]));
+// 	run_str_cases(str_cases, sizeof(str_cases) / sizeof(str_cases[0]));
+// 	return (0);
+// }

@@ -38,6 +38,7 @@ char	*ft_uitoa_printf(unsigned int n, int *out_nbr_len)
 	len = ft_nbrlen(n);
 	*out_nbr_len = len;
 	str = malloc(sizeof(*str) * (len + 1));
+	str[len] = '\0';
 	while (len-- && n != 0)
 	{
 		str[len] = (n % 10) + '0';
@@ -52,14 +53,25 @@ int	print_unsigned(t_format *f, unsigned int arg)
 	char	*result;
 	int		count;
 	int		len;
+	int		precision_zeros;
+	int		total_len;
 
 	count = 0;
+	precision_zeros = 0;
 	result = ft_uitoa_printf(arg, &len);
-	if (f->default_ && f->field_witdh)
-		count += apply_format(f, len);
-	count += write(1, result, len);
+	if (f->dot && f->precision == 0 && arg == 0)
+		len = 0;
+	if (f->dot && f->precision > len)
+		precision_zeros = f->precision - len;
+	total_len = len + precision_zeros;
+	if (!f->minus && f->field_witdh)
+		count += apply_format(f, total_len);
+	while (precision_zeros-- > 0)
+		count += write(1, "0", 1);
+	if (len > 0)
+		count += write(1, result, len);
 	if (f->minus && f->field_witdh)
-		count += apply_format(f, len);
+		count += apply_format(f, total_len);
 	free(result);
 	return (count);
 }
