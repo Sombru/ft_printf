@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:59:14 by sombru            #+#    #+#             */
-/*   Updated: 2025/06/21 15:00:15 by sombru           ###   ########.fr       */
+/*   Updated: 2026/05/08 15:07:45 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	print_string(t_format *f, const char *arg)
 
 	str = get_string(arg);
 	count = 0;
-	if (!arg && f->dot)
+	if (!arg && f->dot && f->precision < 7)
 		str = "";
 	len = ft_strlen(str);
 	out_len = len;
