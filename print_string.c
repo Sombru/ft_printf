@@ -32,7 +32,7 @@ int	print_string(t_format *f, const char *arg)
 
 	str = get_string(arg);
 	count = 0;
-	if (!arg && f->dot && f->precision < 7)
+	if (!arg && f->dot && f->precision < 6)
 		str = "";
 	len = ft_strlen(str);
 	out_len = len;
